@@ -56,18 +56,33 @@ func main() {
 	// fmt.Println(os.Args[0])
 	// fmt.Println(filepath.Base(os.Args[0]))
 
+	MessageBoxPlain("Efectis LaunchBadgeuse", "Bonjour !\nVous allez être rediriger vers la page de la badgeuse.\nPasser une bonne journée !")
 	exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 
+	// fmt.Println("Start")
+
 	for {
+
 		today := time.Now()
 		yyyy, mm, dd := today.Date()
 		tomorrow := time.Date(yyyy, mm, dd+1, 7, 50, 0, 0, today.Location())
-		diff := tomorrow.Sub(today)
-		time.Sleep(diff)
+		// tomorrow := time.Now().Local().Add(time.Minute * 2)
+		// fmt.Println("[Run]")
+		// fmt.Println("[Tomorrow] ", tomorrow)
 
-		err := exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
-		if err != nil {
-			log.Fatal(err)
+		for time.Now().Before(tomorrow) {
+			time.Sleep(10 * time.Second)
+			// fmt.Println("[If] true")
+			// fmt.Println("[Timenow] ", time.Now())
+			// fmt.Println("[Tomorrow] ", tomorrow)
+		}
+
+		if int(today.Weekday()) != 0 && int(today.Weekday()) != 6 {
+			MessageBoxPlain("Efectis LaunchBadgeuse", "Bonjour !\nVous allez être rediriger vers la page de la badgeuse.\nPasser une bonne journée !")
+			err := exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 }

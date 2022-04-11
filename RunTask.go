@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -29,6 +30,8 @@ func MessageBoxPlain(title, caption string) int {
 	return MessageBox(NULL, caption, title, MB_OK)
 }
 
+// func RdmMessage
+
 func main() {
 	url := "https://nothingelse.fr/"
 	ex, err := os.Executable()
@@ -53,32 +56,40 @@ func main() {
 		MessageBoxPlain("Efectis LaunchBadgeuse", "Installation successful !")
 	}
 
-	// fmt.Println(os.Args[0])
-	// fmt.Println(filepath.Base(os.Args[0]))
-
-	MessageBoxPlain("Efectis LaunchBadgeuse", "Bonjour !\nVous allez être rediriger vers la page de la badgeuse.\nPasser une bonne journée !")
+	MessageBoxPlain("Efectis LaunchBadgeuse", "Bonjour,\nVous allez être redirigé vers la page de la badgeuse.\nPassez une bonne journée !")
 	exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
-
-	// fmt.Println("Start")
 
 	for {
 
 		today := time.Now()
 		yyyy, mm, dd := today.Date()
 		tomorrow := time.Date(yyyy, mm, dd+1, 7, 50, 0, 0, today.Location())
-		// tomorrow := time.Now().Local().Add(time.Minute * 2)
-		// fmt.Println("[Run]")
-		// fmt.Println("[Tomorrow] ", tomorrow)
+		// evening := time.Now().Local().Add(8 * time.Second)
+		evening := time.Now().Local().Add(8 * time.Hour)
+		fmt.Println(today)
+		fmt.Println(tomorrow)
+		fmt.Println(evening)
 
-		for time.Now().Before(tomorrow) {
+		fmt.Println("Waiting for evening...")
+		for time.Now().Before(evening) {
 			time.Sleep(10 * time.Second)
-			// fmt.Println("[If] true")
-			// fmt.Println("[Timenow] ", time.Now())
-			// fmt.Println("[Tomorrow] ", tomorrow)
 		}
 
 		if int(today.Weekday()) != 0 && int(today.Weekday()) != 6 {
-			MessageBoxPlain("Efectis LaunchBadgeuse", "Bonjour !\nVous allez être rediriger vers la page de la badgeuse.\nPasser une bonne journée !")
+			MessageBoxPlain("Efectis LaunchBadgeuse", "Bonsoir,\nVous allez être redirigé vers la page de la badgeuse.\nPassez une bonne soirée !")
+			err := exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		fmt.Println("Waiting for tomorrow...")
+		for time.Now().Before(tomorrow) {
+			time.Sleep(10 * time.Second)
+		}
+
+		if int(today.Weekday()) != 0 && int(today.Weekday()) != 6 {
+			MessageBoxPlain("Efectis LaunchBadgeuse", "Bonjour,\nVous allez être redirigé vers la page de la badgeuse.\nPassez une bonne journée !")
 			err := exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 			if err != nil {
 				log.Fatal(err)
